@@ -2,7 +2,7 @@
 
 AutoRefreshNetworkConnection is a library that give you a very simple code and easy to use it. It can handle your tasks when the device connected or disconnected from internet (wifi or mobile data). 
 
-## Configuration
+## Installation
 
 it's simple to config. open build.gradle file in your app module:
 
@@ -19,11 +19,8 @@ dependencies {
 }
 ```
 Note: Make sure you have added uses-permission in AndroidManifest file:
-
 <uses-permission android:name="android.permission.INTERNET" />
-
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
 <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
 ## Usage
