@@ -18,10 +18,13 @@ dependencies {
   implementation 'com.veyo:autorefreshnetworkconnection:1.0.1'
 }
 ```
-Note: Make sure you have added uses-permission in AndroidManifest file:
+
+Note: Make sure you have added uses-permission in AndroidManifest file
+```bash
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+```
 
 ## Usage
 
