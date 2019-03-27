@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckNetworkConnectionHelper implements LifecycleObserver {
-    private static final String TAG = CheckNetworkConnectionHelper.class.getName();
     private static CheckNetworkConnectionHelper sNetworkConnection = new CheckNetworkConnectionHelper();
 
     private AppCompatActivity mAppCompatActivity;
@@ -29,7 +28,6 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     private void onDestroy() {
-        Log.e(TAG, "onDestroy");
         removeStateChangeListener();
     }
 
@@ -54,9 +52,8 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
         if (mNetworkBroadcastReceiver == null) {
             mNetworkBroadcastReceiver = new NetworkBroadcastReceiver(networkState -> {
                 mNetworkState = networkState;
-                for (OnNetworkConnectionChangeListener listener : mChangeListenerList) {
-                    checkAddNetworkChangeListener(listener);
-                }
+                OnNetworkConnectionChangeListener listener = getLastNetworkChangeListener();
+                checkAddNetworkChangeListener(listener);
             });
             mAppCompatActivity.registerReceiver(mNetworkBroadcastReceiver,
                     mNetworkBroadcastReceiver.getIntentFilter());
@@ -70,15 +67,15 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
             return;
         }
 
-        int lastIndex = mChangeListenerList.size() - 1;
-        OnNetworkConnectionChangeListener listener = mChangeListenerList.get(lastIndex);
-
+        OnNetworkConnectionChangeListener listener = getLastNetworkChangeListener();
         mChangeListenerList.remove(listener);
-        Log.e(TAG, "removeStateChangeListener: " + mChangeListenerList.size());
         if (mChangeListenerList.isEmpty()
                 && mNetworkBroadcastReceiver != null) {
             mAppCompatActivity.unregisterReceiver(mNetworkBroadcastReceiver);
             mNetworkBroadcastReceiver = null;
+        } else {
+            OnNetworkConnectionChangeListener lastNetworkChangeListener = getLastNetworkChangeListener();
+            checkAddNetworkChangeListener(lastNetworkChangeListener);
         }
     }
 
@@ -88,5 +85,10 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
         } else if (mNetworkState == NetworkBroadcastReceiver.NetworkState.DISCONNECTED) {
             listener.onDisconnected();
         }
+    }
+
+    private OnNetworkConnectionChangeListener getLastNetworkChangeListener() {
+        int lastIndex = mChangeListenerList.size() - 1;
+        return mChangeListenerList.get(lastIndex);
     }
 }

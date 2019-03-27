@@ -1,6 +1,6 @@
 # AutoRefreshNetworkConnection
 
-AutoRefreshNetworkConnection is a library that give you a very simple code and easy to use it. It can handle your tasks when the device connected or disconnected from internet (wifi or mobile data). 
+AutoRefreshNetworkConnection is a library that give you a very simple code and easy to use it. It can handle your tasks when the device connected or disconnected from internet (wifi or mobile data).
 
 ## Installation
 
@@ -15,7 +15,7 @@ compileOptions {
 
 2. Add dependency:
 dependencies {
-  implementation 'com.veyo:autorefreshnetworkconnection:1.0.1'
+  implementation 'com.veyo:autorefreshnetworkconnection:1.0.2'
 }
 ```
 

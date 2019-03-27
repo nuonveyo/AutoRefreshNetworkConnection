@@ -11,7 +11,7 @@ import com.veyo.autorefreshnetworkconnection.CheckNetworkConnectionHelper;
 import com.veyo.autorefreshnetworkconnection.listener.OnNetworkConnectionChangeListener;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = Main2Activity.class.getName();
+    private static final String TAG = MainActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onConnected() {
                         //Do your task on Network Connected!
+                        Log.e(TAG, "onConnected");
                         textView.setText("Network Connected!");
                         textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary));
                     }
