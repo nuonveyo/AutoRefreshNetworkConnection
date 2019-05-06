@@ -8,12 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.veyo.autorefreshnetworkconnection.listener.OnNetworkConnectionChangeListener;
+import com.veyo.autorefreshnetworkconnection.listener.StopReceiveDisconnectedListener;
 import com.veyo.autorefreshnetworkconnection.receiver.NetworkBroadcastReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CheckNetworkConnectionHelper implements LifecycleObserver {
+    private static final String TAG = CheckNetworkConnectionHelper.class.getName();
     private static CheckNetworkConnectionHelper sNetworkConnection = new CheckNetworkConnectionHelper();
 
     private AppCompatActivity mAppCompatActivity;
@@ -41,7 +43,6 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
             mAppCompatActivity = appCompatActivity;
         }
         appCompatActivity.getLifecycle().addObserver(this);
-
         checkAddNetworkChangeListener(onNetworkConnectionChangeListener);
 
         if (mChangeListenerList == null) {
@@ -80,6 +81,12 @@ public class CheckNetworkConnectionHelper implements LifecycleObserver {
     }
 
     private void checkAddNetworkChangeListener(OnNetworkConnectionChangeListener listener) {
+        Log.e(TAG, "checkAddNetworkChangeListener: " + listener);
+        if (listener == null || (listener instanceof StopReceiveDisconnectedListener
+                && ((StopReceiveDisconnectedListener) listener).isReadyReceiveConnectedListener())) {
+            return;
+        }
+
         if (mNetworkState == NetworkBroadcastReceiver.NetworkState.CONNECTED) {
             listener.onConnected();
         } else if (mNetworkState == NetworkBroadcastReceiver.NetworkState.DISCONNECTED) {

@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.veyo.autorefreshnetworkconnection.CheckNetworkConnectionHelper;
-import com.veyo.autorefreshnetworkconnection.listener.OnNetworkConnectionChangeListener;
+import com.veyo.autorefreshnetworkconnection.listener.StopReceiveDisconnectedListener;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getName();
@@ -22,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
 
         CheckNetworkConnectionHelper checkNetworkConnectionHelper = CheckNetworkConnectionHelper.getInstance();
         checkNetworkConnectionHelper.onNetworkConnectionChange(this,
-                new OnNetworkConnectionChangeListener() {
+                new StopReceiveDisconnectedListener() {
                     @Override
                     public void onConnected() {
+                        super.onConnected();
                         //Do your task on Network Connected!
                         Log.e(TAG, "onConnected");
                         textView.setText("Network Connected!");
@@ -37,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(TAG, "onDisconnected");
                         textView.setText("Network Disconnected!");
                         textView.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
+                    }
+
+                    @Override
+                    public boolean stopReceiveDisconnectedListener() {
+                        return true;
                     }
                 });
 
