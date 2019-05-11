@@ -1,5 +1,6 @@
 package com.veyo.autorefreshnetworkconnectivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
 
         CheckNetworkConnectionHelper checkNetworkConnectionHelper = CheckNetworkConnectionHelper.getInstance();
-        checkNetworkConnectionHelper.onNetworkConnectionChange(this,
+        checkNetworkConnectionHelper.onNetworkConnectionChange(MainActivity.this,
                 new StopReceiveDisconnectedListener() {
                     @Override
                     public void onConnected() {
@@ -44,9 +45,38 @@ public class MainActivity extends AppCompatActivity {
                     public boolean stopReceiveDisconnectedListener() {
                         return true;
                     }
+
+                    @Override
+                    public Context getContext() {
+                        return MainActivity.this;
+                    }
                 });
 
-        findViewById(R.id.button).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, Main2Activity.class)));
+        CheckNetworkConnectionHelper.getInstance().onNetworkConnectionChange(MainActivity.this,
+                new StopReceiveDisconnectedListener() {
+                    @Override
+                    public boolean stopReceiveDisconnectedListener() {
+                        return false;
+                    }
 
+                    @Override
+                    public void onDisconnected() {
+                        Log.e(TAG, "onDisconnected2");
+
+                    }
+
+                    @Override
+                    public void onConnected() {
+                        super.onConnected();
+                        Log.e(TAG, "connected2");
+                    }
+
+                    @Override
+                    public Context getContext() {
+                        return MainActivity.this;
+                    }
+                });
+        findViewById(R.id.button).setOnClickListener(v ->
+                startActivity(new Intent(this, Main2Activity.class)));
     }
 }

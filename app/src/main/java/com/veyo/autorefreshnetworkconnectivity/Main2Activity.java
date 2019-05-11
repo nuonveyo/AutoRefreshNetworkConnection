@@ -1,5 +1,7 @@
 package com.veyo.autorefreshnetworkconnectivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,7 @@ public class Main2Activity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView);
 
         CheckNetworkConnectionHelper checkNetworkConnectionHelper = CheckNetworkConnectionHelper.getInstance();
-        checkNetworkConnectionHelper.onNetworkConnectionChange(this,
+        checkNetworkConnectionHelper.onNetworkConnectionChange(Main2Activity.this,
                 new OnNetworkConnectionChangeListener() {
                     @Override
                     public void onConnected() {
@@ -36,6 +38,31 @@ public class Main2Activity extends AppCompatActivity {
                         Log.e(TAG, "onDisconnected");
                         textView.setText("Network Disconnected!");
                         textView.setTextColor(ContextCompat.getColor(Main2Activity.this, R.color.colorAccent));
+                    }
+
+                    @Override
+                    public Context getContext() {
+                        return Main2Activity.this;
+                    }
+                });
+
+        CheckNetworkConnectionHelper.getInstance().onNetworkConnectionChange(Main2Activity.this,
+                new OnNetworkConnectionChangeListener() {
+                    @Override
+                    public void onConnected() {
+                        //Do your task on Network Connected!
+                        Log.e(TAG, "onConnected2");
+                    }
+
+                    @Override
+                    public void onDisconnected() {
+                        //Do your task on Network Disconnected!
+                        Log.e(TAG, "onDisconnected2");
+                    }
+
+                    @Override
+                    public Context getContext() {
+                        return Main2Activity.this;
                     }
                 });
     }
