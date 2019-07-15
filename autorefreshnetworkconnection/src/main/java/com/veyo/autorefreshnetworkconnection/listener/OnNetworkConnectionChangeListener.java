@@ -7,5 +7,9 @@ public interface OnNetworkConnectionChangeListener {
 
     void onDisconnected();
 
+    /**
+     * @return current context for register all components in the same context
+     * and notify connectivity listener
+     */
     Context getContext();
 }

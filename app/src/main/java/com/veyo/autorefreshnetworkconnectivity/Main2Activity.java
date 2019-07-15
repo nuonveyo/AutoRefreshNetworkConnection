@@ -1,6 +1,5 @@
 package com.veyo.autorefreshnetworkconnectivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -18,20 +17,11 @@ public class Main2Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-
         TextView textView = findViewById(R.id.textView);
 
-        CheckNetworkConnectionHelper checkNetworkConnectionHelper = CheckNetworkConnectionHelper.getInstance();
-        checkNetworkConnectionHelper.onNetworkConnectionChange(Main2Activity.this,
-                new OnNetworkConnectionChangeListener() {
-                    @Override
-                    public void onConnected() {
-                        //Do your task on Network Connected!
-                        Log.e(TAG, "onConnected");
-                        textView.setText("Network Connected!");
-                        textView.setTextColor(ContextCompat.getColor(Main2Activity.this, R.color.colorPrimary));
-                    }
-
+        CheckNetworkConnectionHelper
+                .getInstance()
+                .registerNetworkChangeListener(new OnNetworkConnectionChangeListener() {
                     @Override
                     public void onDisconnected() {
                         //Do your task on Network Disconnected!
@@ -41,23 +31,11 @@ public class Main2Activity extends AppCompatActivity {
                     }
 
                     @Override
-                    public Context getContext() {
-                        return Main2Activity.this;
-                    }
-                });
-
-        CheckNetworkConnectionHelper.getInstance().onNetworkConnectionChange(Main2Activity.this,
-                new OnNetworkConnectionChangeListener() {
-                    @Override
                     public void onConnected() {
                         //Do your task on Network Connected!
-                        Log.e(TAG, "onConnected2");
-                    }
-
-                    @Override
-                    public void onDisconnected() {
-                        //Do your task on Network Disconnected!
-                        Log.e(TAG, "onDisconnected2");
+                        Log.e(TAG, "onConnected");
+                        textView.setText("Network Connected!");
+                        textView.setTextColor(ContextCompat.getColor(Main2Activity.this, R.color.colorPrimary));
                     }
 
                     @Override

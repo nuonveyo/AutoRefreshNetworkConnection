@@ -7,12 +7,18 @@ public abstract class StopReceiveDisconnectedListener implements OnNetworkConnec
         return mIsReadyReceiveConnectedListener;
     }
 
-    public abstract boolean stopReceiveDisconnectedListener();
+    @Deprecated
+    public boolean stopReceiveDisconnectedListener() {
+        return true;
+    }
 
     @Override
     public void onConnected() {
-        if (stopReceiveDisconnectedListener()) {
-            mIsReadyReceiveConnectedListener = true;
-        }
+        mIsReadyReceiveConnectedListener = true;
+        onNetworkConnected();
+    }
+
+    public void onNetworkConnected() {
+
     }
 }
