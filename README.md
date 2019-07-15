@@ -1,6 +1,6 @@
 # AutoRefreshNetworkConnection
 
-AutoRefreshNetworkConnection is a library that give you a very simple code and easy to use it. It can handle your tasks when the device connected or disconnected from internet (wifi or mobile data).
+AutoRefreshNetworkConnection is a library that give you a very simple code and easy to use it. It can handle your tasks when the device connected or disconnected from internet (wifi or mobile data) by using observer pattern. 
 
 ## Installation
 
@@ -15,7 +15,7 @@ compileOptions {
 
 2. Add dependency:
     dependencies {
-    implementation 'com.veyo:autorefreshnetworkconnection:1.0.4'
+    implementation 'com.veyo:autorefreshnetworkconnection:1.0.5'
 }
 ```
 
@@ -35,37 +35,31 @@ public class MainActivity extends AppCompatActivity {
       super.onCreate(savedInstanceState);
       setContentView(R.layout.activity_main);
 
-      CheckNetworkConnectionHelper.getInstance().onNetworkConnectionChange(this, new StopReceiveDisconnectedListener() {
-        @Override
-        public void onConnected() {
-            super.onConnected();
-            //Do your task on Network Connected!
-            Log.e(TAG, "onConnected");
-        }
+      CheckNetworkConnectionHelper
+                .getInstance()
+                .registerNetworkChangeListener(new StopReceiveDisconnectedListener() {
+                    @Override
+                    public void onDisconnected() {
+                        //Do your task on Network Disconnected!
+                        Log.e(TAG, "onDisconnected");
+                    }
 
-        @Override
-        public void onDisconnected() {
-            //Do your task on Network Disconnected!
-            Log.e(TAG, "onDisconnected");
-        }
+                    @Override
+                    public void onNetworkConnected() {
+                        //Do your task on Network Connected!
+                        Log.e(TAG, "onConnected");
 
-        @Override
-        public boolean stopReceiveDisconnectedListener() {
-            return true;
-        }
+                    }
 
-        @Override
-        public Context getContext() {
-            return MainActivity.this;
-        }
-    });
-  }
-}
+                    @Override
+                    public Context getContext() {
+                        return MainActivity.this;
+                    }
+                });}
 ```
-Class StopReceiveDisconnectedListener will override three methods:
-- onConnected(): this method will listen when network connected. call super.onConnected() when you override stopReceiveDisconnectedListener() with return true, do this mean that you don't want to listen callback again after onConnected() method worked!
-- onDisconnected(): this method will listen when network disconnected.
-- stopReceiveDisconnectedListener(): override this with default return false, if true the listener will not work again after onConnected() method worked!
-- getContext(): override to return current context for multiple-listener in the same context can listener when network connected or disconnected 
+StopReceiveDisconnectedListener: will perform operation on network connected and disconnected by providing current context of your activity or fragment. It's useful when you doesn't want to listen onDisconnected method call again and again after network connected.
 
-you can also using class OnNetworkConnectionChangeListener instance. The listener will call when network connected or disconnected.
+You can also using OnNetworkConnectionChangeListener: will perform operation on network connected and disconnected by providing current context. It's useful you want to listen onConnected or onDisconnected method call again and again whenever network state change.
+
+## Note
+All listeners which were registered in the same context (fragment or activity etc.) will be call on network connectivity change state connected/disconnected. 
