@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                     public Context getContext() {
                         return MainActivity.this;
                     }
-                });}
+                });
+}
 ```
 StopReceiveDisconnectedListener: will perform operation on network connected and disconnected by providing current context of your activity or fragment. It's useful when you doesn't want to listen onDisconnected method call again and again after network connected.
 
@@ -63,3 +64,10 @@ You can also using OnNetworkConnectionChangeListener: will perform operation on 
 
 ## Note
 All listeners which were registered in the same context (fragment or activity etc.) will be call on network connectivity change state connected/disconnected. 
+
+
+```python
+AutoRefreshNetworkUtil.removeAllRegisterNetworkListener()
+```
+
+call AutoRefreshNetworkUtil.removeAllRegisterNetworkListener() before all acitivitys/fragments will be destory immediately to clear all listeners.
