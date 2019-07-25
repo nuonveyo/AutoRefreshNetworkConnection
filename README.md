@@ -15,7 +15,7 @@ compileOptions {
 
 2. Add dependency:
     dependencies {
-    implementation 'com.veyo:autorefreshnetworkconnection:1.0.5'
+    implementation 'com.veyo:autorefreshnetworkconnection:1.0.6'
 }
 ```
 
