@@ -64,6 +64,14 @@ public class CheckNetworkConnectionHelper extends SubscribeNetworkObserverChange
         }
     }
 
+    protected void unregisterNetworkChangeListener() {
+        getNetworkObserverList().clear();
+        mAppCompatActivity.unregisterReceiver(mNetworkBroadcastReceiver);
+        mCurrentContext = null;
+        mNetworkBroadcastReceiver = null;
+        removeInstance();
+    }
+
     /**
      * this method will be remove soon
      * please use registerNetworkChangeListener method instance
@@ -113,8 +121,7 @@ public class CheckNetworkConnectionHelper extends SubscribeNetworkObserverChange
             unregisterObserver(listener);
         }
 
-        if (getNetworkObserverList().isEmpty()
-                && mNetworkBroadcastReceiver != null) {
+        if (getNetworkObserverList().isEmpty() && mNetworkBroadcastReceiver != null) {
             mAppCompatActivity.unregisterReceiver(mNetworkBroadcastReceiver);
             mCurrentContext = null;
             mNetworkBroadcastReceiver = null;
@@ -137,8 +144,7 @@ public class CheckNetworkConnectionHelper extends SubscribeNetworkObserverChange
     }
 
     private void checkAddNetworkChangeListener(OnNetworkConnectionChangeListener listener) {
-        if (listener != null && !(listener instanceof StopReceiveDisconnectedListener
-                && ((StopReceiveDisconnectedListener) listener).isReadyReceiveConnectedListener())) {
+        if (listener != null && !(listener instanceof StopReceiveDisconnectedListener && ((StopReceiveDisconnectedListener) listener).isReadyReceiveConnectedListener())) {
             if (mNetworkState == NetworkBroadcastReceiver.NetworkState.CONNECTED) {
                 listener.onConnected();
             } else if (mNetworkState == NetworkBroadcastReceiver.NetworkState.DISCONNECTED) {
@@ -150,8 +156,7 @@ public class CheckNetworkConnectionHelper extends SubscribeNetworkObserverChange
     private List<OnNetworkConnectionChangeListener> getLastNetworkChangeListener() {
         List<OnNetworkConnectionChangeListener> dataList = new ArrayList<>();
         for (OnNetworkConnectionChangeListener listener : getNetworkObserverList()) {
-            Log.e(TAG, "My Context: " + listener.getContext()
-                    + " == " + mCurrentContext);
+            Log.e(TAG, "My Context: " + listener.getContext() + " == " + mCurrentContext);
             if (listener.getContext() != null
                     && listener.getContext().equals(mCurrentContext)) {
                 dataList.add(listener);

@@ -48,4 +48,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(v ->
                 startActivity(new Intent(this, Main2Activity.class)));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "onDestory");
+    }
 }
